@@ -22,10 +22,16 @@ button {
   aspect-ratio: 2 / 1;
 }
 
-.screen {
+.display {
     height: 100px;
     border: 1px solid black;
-    margin: 10px
+    margin: 10px;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    font-size: 40px;
+    padding: 10px;
+    
 }
 
 .buttons {
