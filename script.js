@@ -34,16 +34,17 @@ const numberButtons = document.querySelectorAll(".number");
 const pressNumberButton = numberButtons.forEach(btn => {
     btn.addEventListener("click", () => {
         if (result) reset();
-        if (operator && displayNumber) {
-            console.log("ping")
+        if (operator && firstNum && !secondNum) {
             display.textContent = "";
             secondNum = btn.textContent;
             display.textContent = secondNum;
             displayNumber = "";
+            console.log(`secondNum ${secondNum}`);
         }
         else if (operator && secondNum) {
             secondNum += btn.textContent;
             display.textContent = secondNum;
+            console.log(`secondNum ${secondNum}`);
         }
           
         else if (displayNumber === "0" || display.textContent === result) {
@@ -63,16 +64,30 @@ const pressNumberButton = numberButtons.forEach(btn => {
 const operatorButtons = document.querySelectorAll(".operator");
 const pressOperatorButton = operatorButtons.forEach(btn => {
     btn.addEventListener("click", () => {
-        firstNum = displayNumber;
-        operator = btn.textContent;
-        console.log(operator);
+          if (firstNum && secondNum) {
+            display.textContent = operate(firstNum, secondNum, operator);
+            firstNum = result;
+            operator = btn.textContent;
+            secondNum = "";
+            result = "";
+            console.log(operator);
+    }
+    
+    // if user has two nums plus operator, then presses another operator, display result.
+    // then asign result to firstNum, and reset secondNum and result
+    
+        else { 
+            firstNum = displayNumber;
+            operator = btn.textContent;
+            console.log(operator);
+        }
     })
 });
 
 const clearButton = document.querySelector("#clear");
 const pressClearButton = clearButton.addEventListener("click", () => {
-    displayNumber = "0";
-    display.textContent = displayNumber;
+    reset();
+    display.textContent = 0;
 });
 
 const equalsButton = document.querySelector("#equals");
@@ -84,7 +99,7 @@ const pressEqualsButton = equalsButton.addEventListener("click" , () => {
 })
 
 function reset() {
-    display.content = "";
+    display.textContent = "";
     operator = "";
     firstNum = "";
     secondNum = "";
