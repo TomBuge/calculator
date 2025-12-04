@@ -33,51 +33,43 @@ display.textContent = displayNumber;
 const numberButtons = document.querySelectorAll(".number");
 const pressNumberButton = numberButtons.forEach(btn => {
     btn.addEventListener("click", () => {
-        if (result) reset();
-        if (operator && firstNum && !secondNum) {
+        if (result) reset();                        
+        if (displayNumber === "0" || display.textContent === result) {              
             display.textContent = "";
-            secondNum = btn.textContent;
-            display.textContent = secondNum;
-            displayNumber = "";
-            console.log(`secondNum ${secondNum}`);
-        }
-        else if (operator && secondNum) {
-            secondNum += btn.textContent;
-            display.textContent = secondNum;
-            console.log(`secondNum ${secondNum}`);
-        }
-          
-        else if (displayNumber === "0" || display.textContent === result) {
             displayNumber = btn.textContent;
             display.textContent = displayNumber;
-            console.log(displayNumber);
+           
         }
-        else {
+        else {                  
             displayNumber += btn.textContent;
-            display.textContent = displayNumber;
-            console.log(displayNumber);
+            display.textContent = displayNumber;  
         }
-    }) 
-        
+    })        
 });
 
 const operatorButtons = document.querySelectorAll(".operator");
 const pressOperatorButton = operatorButtons.forEach(btn => {
     btn.addEventListener("click", () => {
-          if (firstNum && secondNum) {
+          if (firstNum && displayNumber) { 
+            secondNum = displayNumber;
             display.textContent = operate(firstNum, secondNum, operator);
             firstNum = result;
             operator = btn.textContent;
-            secondNum = "";
+            displayNumber = "";
             result = "";
             console.log(operator);
     }
-    
-    // if user has two nums plus operator, then presses another operator, display result.
-    // then asign result to firstNum, and reset secondNum and result
+
+        else if (result) {
+            firstNum = result;
+            result = "";
+            displayNumber = "";
+            operator = btn.textContent;
+        }
     
         else { 
-            firstNum = displayNumber;
+            firstNum = displayNumber; 
+            displayNumber = "";   
             operator = btn.textContent;
             console.log(operator);
         }
@@ -92,11 +84,42 @@ const pressClearButton = clearButton.addEventListener("click", () => {
 
 const equalsButton = document.querySelector("#equals");
 const pressEqualsButton = equalsButton.addEventListener("click" , () => {
-    if (firstNum && secondNum) {
+    if (firstNum && displayNumber) {
+        secondNum = displayNumber;
         display.textContent = operate(firstNum, secondNum, operator);
+        displayNumber = "";
+        
+        
        
     }
 })
+
+const decimalButton = document.querySelector('#decimal-point');
+const pressDecimal = decimalButton.addEventListener("click", () => {
+    if (displayNumber.includes(".")) {}
+    else if (!firstNum) {
+        displayNumber += "."
+        display.textContent = displayNumber;
+  }
+});
+
+const plusMinus = document.querySelector('#plus-minus'); 
+const pressPlusMinus = plusMinus.addEventListener("click", () => {
+    
+    if (result) {
+        result = -result;
+        display.textContent = result;
+    }
+    
+    else if (displayNumber) {
+            displayNumber = +displayNumber;
+            console.log("displayNumber before flip:", displayNumber);
+            displayNumber = -displayNumber;
+            display.textContent = displayNumber;
+    }
+
+  
+});
 
 function reset() {
     display.textContent = "";
@@ -107,20 +130,4 @@ function reset() {
     result = "";
 }
 
-
-// when an operator is pressed, copy displayNumber to firstNum 
-// store operator in var operator. 
-// if user presses operator again, store new value in operator
-// user then enters second number. 
-// when user presses equals, copy displayNumber to secondNum 
-// and execute operate() 
-// display.content = results
-//  
-
-
-// create display variable 
-// add event listen to all buttons
-// if button has class number get button content 
-// if display variable is empty, store button content. 
-// if display var already has a number, concatenate 
 
