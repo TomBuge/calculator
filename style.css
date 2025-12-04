@@ -18,9 +18,9 @@
 }
 
 button {
-  width: 40%;  
-  aspect-ratio: 2 / 1;
+    height: 100px;
 }
+
 
 .display {
     height: 100px;
@@ -35,17 +35,17 @@ button {
 }
 
 .buttons {
-    display: flex;
-    justify-content: space-between;
-    gap: 30px;
-    margin: 10px;
-    
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 10px;    
 }
 
-#zero,
+
+
 #equals {
-    width: 100%;
-    margin: 
+    width: 100%; 
+    grid-column: span 2;
 }
 
 .container {
@@ -53,10 +53,3 @@ button {
     justify-content: center;
 }
 
-.right-column,
-.left-column {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 20px;
-}

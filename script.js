@@ -77,10 +77,7 @@ const pressOperatorButton = operatorButtons.forEach(btn => {
 });
 
 const clearButton = document.querySelector("#clear");
-const pressClearButton = clearButton.addEventListener("click", () => {
-    reset();
-    display.textContent = 0;
-});
+const pressClearButton = clearButton.addEventListener("click", reset);
 
 const equalsButton = document.querySelector("#equals");
 const pressEqualsButton = equalsButton.addEventListener("click" , () => {
@@ -94,7 +91,7 @@ const pressEqualsButton = equalsButton.addEventListener("click" , () => {
     }
 })
 
-const decimalButton = document.querySelector('#decimal-point');
+const decimalButton = document.querySelector('#decimal');
 const pressDecimal = decimalButton.addEventListener("click", () => {
     if (displayNumber.includes(".")) {}
     else if (!firstNum) {
@@ -117,9 +114,23 @@ const pressPlusMinus = plusMinus.addEventListener("click", () => {
             displayNumber = -displayNumber;
             display.textContent = displayNumber;
     }
-
-  
 });
+
+const deleteButton = document.querySelector("#del");
+const pressDelete = deleteButton.addEventListener("click", () => {
+    if (displayNumber && displayNumber !== 0) {
+        displayNumber = displayNumber.slice(0, -1);
+        display.textContent = displayNumber;    
+    }
+    if (!displayNumber) display.textContent = 0;
+
+    if (result) reset();
+    
+
+
+})
+  
+
 
 function reset() {
     display.textContent = "";
@@ -128,6 +139,8 @@ function reset() {
     secondNum = "";
     displayNumber = "";
     result = "";
+    display.textContent = 0;
 }
+
 
 
