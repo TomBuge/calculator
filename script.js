@@ -32,73 +32,22 @@ const display = document.querySelector(".display");
 display.textContent = displayNumber;
 const numberButtons = document.querySelectorAll(".number");
 const pressNumberButton = numberButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-        if (result) reset();                        
-        if (displayNumber === "0" || display.textContent === result) {              
-            display.textContent = "";
-            displayNumber = btn.textContent;
-            display.textContent = displayNumber;
-           
-        }
-        else {                  
-            displayNumber += btn.textContent;
-            display.textContent = displayNumber;  
-        }
-    })        
+    btn.addEventListener("click", () => pressNumber(btn.textContent)) 
 });
 
 const operatorButtons = document.querySelectorAll(".operator");
 const pressOperatorButton = operatorButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-          if (firstNum && displayNumber) { 
-            secondNum = displayNumber;
-            display.textContent = operate(firstNum, secondNum, operator);
-            firstNum = result;
-            operator = btn.textContent;
-            displayNumber = "";
-            result = "";
-            console.log(operator);
-    }
-
-        else if (result) {
-            firstNum = result;
-            result = "";
-            displayNumber = "";
-            operator = btn.textContent;
-        }
-    
-        else { 
-            firstNum = displayNumber; 
-            displayNumber = "";   
-            operator = btn.textContent;
-            console.log(operator);
-        }
-    })
+    btn.addEventListener("click", () => pressOperator(btn.textContent))
 });
 
 const clearButton = document.querySelector("#clear");
 const pressClearButton = clearButton.addEventListener("click", reset);
 
 const equalsButton = document.querySelector("#equals");
-const pressEqualsButton = equalsButton.addEventListener("click" , () => {
-    if (firstNum && displayNumber) {
-        secondNum = displayNumber;
-        display.textContent = operate(firstNum, secondNum, operator);
-        displayNumber = "";
-        
-        
-       
-    }
-})
+const pressEqualsButton = equalsButton.addEventListener("click" , () => pressEquals);
 
 const decimalButton = document.querySelector('#decimal');
-const pressDecimal = decimalButton.addEventListener("click", () => {
-    if (displayNumber.includes(".")) {}
-    else if (!firstNum) {
-        displayNumber += "."
-        display.textContent = displayNumber;
-  }
-});
+const pressDecimalButton = decimalButton.addEventListener("click", () => pressDecimal);
 
 const plusMinus = document.querySelector('#plus-minus'); 
 const pressPlusMinus = plusMinus.addEventListener("click", () => {
@@ -117,20 +66,8 @@ const pressPlusMinus = plusMinus.addEventListener("click", () => {
 });
 
 const deleteButton = document.querySelector("#del");
-const pressDelete = deleteButton.addEventListener("click", () => {
-    if (displayNumber && displayNumber !== 0) {
-        displayNumber = displayNumber.slice(0, -1);
-        display.textContent = displayNumber;    
-    }
-    if (!displayNumber) display.textContent = 0;
-
-    if (result) reset();
-    
-
-
-})
+const pressDeleteButton = deleteButton.addEventListener("click", () => pressDelete());
   
-
 
 function reset() {
     display.textContent = "";
@@ -142,5 +79,90 @@ function reset() {
     display.textContent = 0;
 }
 
+function pressNumber(inputNumber) {
+    if (result) reset();                        
+        if (displayNumber === "0" || display.textContent === result) {              
+            display.textContent = "";
+            displayNumber = inputNumber;
+            display.textContent = displayNumber;          
+        }
+        else {                  
+            displayNumber += inputNumber;
+            display.textContent = displayNumber;  
+        }
+}
 
+function pressOperator(input) {
+    if (firstNum && displayNumber) { 
+            secondNum = displayNumber;
+            display.textContent = operate(firstNum, secondNum, operator);
+            firstNum = result;
+            operator = input;
+            displayNumber = "";
+            result = "";
+            console.log(operator);
+    }
+
+        else if (result) {
+            firstNum = result;
+            result = "";
+            displayNumber = "";
+            operator = input;
+        }
+    
+        else { 
+            firstNum = displayNumber; 
+            displayNumber = "";   
+            operator = input;
+            console.log(operator);
+        }
+}
+
+function pressEquals() {
+        if (firstNum && displayNumber) {
+        secondNum = displayNumber;
+        display.textContent = operate(firstNum, secondNum, operator);
+        displayNumber = "";       
+    }
+}
+
+function pressDecimal() {
+        if (displayNumber.includes(".")) {}
+    else {
+        displayNumber += "."
+        display.textContent = displayNumber;
+  }
+}
+
+function pressDelete() {
+     if (displayNumber && displayNumber !== 0) {
+        displayNumber = displayNumber.slice(0, -1);
+        display.textContent = displayNumber;    
+    }
+    if (!displayNumber) display.textContent = 0;
+
+    if (result) reset();
+}
+
+
+document.addEventListener("keydown", handleKey)
+
+function handleKey(e) {
+    const key = e.key;
+
+    if (!isNaN(key)) {
+        pressNumber(key);
+    }
+
+    if (key === "+" || key === "-" || key === "/" || key === "*") {
+        pressOperator(key);
+    }
+
+    if (key === "Enter") pressEquals();
+    if (key === ".") pressDecimal();
+    if (key === "Backspace") pressDelete();
+    if (key.toLowerCase() === "c") reset();
+
+
+}
 
