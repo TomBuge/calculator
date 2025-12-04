@@ -17,6 +17,12 @@
     border: 2px solid black;
 }
 
+@media (max-width: 600px) {
+    .calculator {
+        margin: 0;
+    }
+}
+
 button {
     height: 100px;
 }
