@@ -11,19 +11,21 @@ let result;
 const operate = (firstNum, secondNum, operator) => {
     firstNum = +firstNum;
     secondNum = +secondNum;
+    if (operator === "*") operator = "X";
+
     switch (operator) {
     case "+":
         result = add(firstNum, secondNum);
-        return result;
+        return roundResult(result);
     case "-": 
         result = subtract(firstNum, secondNum);
-        return result;
+        return roundResult(result);
     case "X":
         result = multiply(firstNum, secondNum);
-        return result;
+        return roundResult(result);
     case "/":
         result = divide(firstNum, secondNum);
-        return result; 
+        return roundResult(result); 
     } 
 };
 
@@ -44,10 +46,13 @@ const clearButton = document.querySelector("#clear");
 const pressClearButton = clearButton.addEventListener("click", reset);
 
 const equalsButton = document.querySelector("#equals");
-const pressEqualsButton = equalsButton.addEventListener("click" , () => pressEquals);
+const pressEqualsButton = equalsButton.addEventListener("click" , () => pressEquals());
 
 const decimalButton = document.querySelector('#decimal');
-const pressDecimalButton = decimalButton.addEventListener("click", () => pressDecimal);
+const pressDecimalButton = decimalButton.addEventListener("click", () => pressDecimal());
+
+const deleteButton = document.querySelector("#del");
+const pressDeleteButton = deleteButton.addEventListener("click", () => pressDelete());
 
 const plusMinus = document.querySelector('#plus-minus'); 
 const pressPlusMinus = plusMinus.addEventListener("click", () => {
@@ -64,9 +69,6 @@ const pressPlusMinus = plusMinus.addEventListener("click", () => {
             display.textContent = displayNumber;
     }
 });
-
-const deleteButton = document.querySelector("#del");
-const pressDeleteButton = deleteButton.addEventListener("click", () => pressDelete());
   
 
 function reset() {
@@ -166,3 +168,7 @@ function handleKey(e) {
 
 }
 
+function roundResult(num) {
+    if (Number.isInteger(num)) return num;
+    return Number(num.toFixed(9));
+}
